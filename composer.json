@@ -1,0 +1,17 @@
+{
+  "repositories": [
+    {
+      "type": "git",
+      "url": "https://github.com/iQXCorp/AmplifyPhpClient.git"
+    },
+    {
+      "type": "git",
+      "url": "https://github.com/bigcommerce/bigcommerce-api-php.git"      
+    }
+  ],
+  "require": {
+    "iQXCorp/AmplifyPhpClient": "*@dev",
+    "vlucas/phpdotenv": "^2.4",
+    "bigcommerce/api": "dev-master"
+  }
+}
