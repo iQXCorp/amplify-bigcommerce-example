@@ -1,1 +1,1 @@
-# Amplify Developer API PHP example
+# Amplify Developer Big Commerce API PHP example
