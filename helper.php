@@ -141,13 +141,10 @@ if (!function_exists('transformComplexProduct')) {
         $productVariant = new \Swagger\Client\Model\ProductVariants();
 
         $productVariant->setAttributes(array());
-        $productVariant->setCreated($dateCreated);
-        
+        $productVariant->setCreated($dateCreated);        
         
         $productVariant->setImageSourceUrl($variant->image_file ? $variant->image_file : $productImage); //todo
-        
         $productVariant->setInStock(!$outOfStock);
-        
         $productVariant->setInventoryManagement($product->inventory_tracking || "");
         $productVariant->setInventoryQuantity($variant->inventory_level . "");
         $productVariant->setPrice($variant->price ? floatval($variant->price) : floatval($variant->adjusted_price));
@@ -188,25 +185,6 @@ if (!function_exists('transformCustomer')) {
       	$customer->phone = ltrim($customer->phone, "+1");
       	$areaCode = substr($customer->phone, 0, 3);
       }
-      	
-
-//       if (!isset($addresses) || count($addresses) === 0) {
-//         $customer['addresses'] = array(
-//           phone => "0000000000",
-//         );
-//       }
-
-//       $customer['addresses'][0]['phone'] = preg_replace('/\D+/', "", $customer['addresses'][0]['phone']);
-
-//       if (!isset($customer['addresses'][0]['phone']) || $customer['addresses'][0]['phone'] === null) {
-//         $areaCode = "000";
-//       } else {
-//         if (strpos($customer['addresses'][0]['phone'], "1") === 1) {
-//           $customer['addresses'][0]['phone'] = ltrim($customer['addresses'][0]['phone'], "1");
-//         }
-//         $customer['addresses'][0]['phone'] = ltrim($customer['addresses'][0]['phone'], "+1");
-//         $areaCode = substr($customer['addresses'][0]['phone'], 0, 3);
-//       }
 
       $formattedCustomer = new \Swagger\Client\Model\Customer();
       
@@ -214,33 +192,25 @@ if (!function_exists('transformCustomer')) {
       $dateModified = dateConvert($customer->date_modified);
 
       $formattedCustomer->setActivationDate($dateCreated);
-      $formattedCustomer->setAreaCode($areaCode);
-    
+      $formattedCustomer->setAreaCode($areaCode);    
       $formattedCustomer->setAddress1($addresses[0]->street_1);
       $formattedCustomer->setAddress2($addresses[0]->street_2);
       $formattedCustomer->setCity($addresses[0]->city);
       $formattedCustomer->setCompany($addresses[0]->company ? $addresses[0]->company : "");
       $formattedCustomer->setCountry($addresses[0]->country);
       $formattedCustomer->setProvince($addresses[0]->state);
-      $formattedCustomer->setZip($addresses[0]->zip);
-      
+      $formattedCustomer->setZip($addresses[0]->zip);      
       $formattedCustomer->setEmail($customer->email);
       $formattedCustomer->setFirstName($customer->first_name);
       $formattedCustomer->setLastName($customer->last_name);
       $formattedCustomer->setModifiedDate($dateModified);
       $formattedCustomer->setOrdersCount(0);
-      $formattedCustomer->setPhone($customer->phone ? $customer->phone : "");
-      
+      $formattedCustomer->setPhone($customer->phone ? $customer->phone : "");      
       $formattedCustomer->setRefId($customer->id . "");
       $formattedCustomer->setSignedUpAt($dateCreated);
       $formattedCustomer->setTotalSpent(true ? floatval(0) : 0.00);
-      $formattedCustomer->setVerified(false); 
-      
-//             echo "<pre>";
-//             print_r($formattedCustomer);
-//             echo "</pre>";
-//             exit;
-      
+      $formattedCustomer->setVerified(false);       
+     
       return $formattedCustomer;
     }
 }
@@ -250,15 +220,10 @@ if (!function_exists('transformOrder')) {
     {
 
       $orderProducts = $order->products;
-      
-//       echo "<pre>";
-//       print_r($order->products);
-//       echo "</pre>";      
     
       $dateCreated = dateConvert($order->date_created);
       $dateModified = dateConvert($order->date_modified);
     	
-      //$totalShipping = array_reduce(array_map("extractPrice", $order['shipping_lines']), "sum", 10);
       $totalShipping = $order->shipping_cost_inc_tax;
     	 
       //$order['line_items'] = array_map("addProductReference", $order['line_items']);

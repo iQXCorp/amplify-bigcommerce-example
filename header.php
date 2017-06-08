@@ -3,54 +3,25 @@ require 'vendor/autoload.php';
 use Bigcommerce\Api\Client as Bigcommerce;
 
 
-// basic auth
+// basic auth (old way, but still works)
 // Bigcommerce::configure(array(
 // 		'store_url' => 'https://all-points-south9.mybigcommerce.com',
 // 		'username'	=> 'Aidan',
 // 		'api_key'	=> 'b4b80dd35f674a7f612bbe636132c45b545fb648'
 // ));
 
+/* 
+ * new experimental way - start
+ */
+// $object = new \stdClass();
+// $object->client_id = 'kqegihaeawy0e97dqg7jt82puemivj2';
+// $object->client_secret = '27kqptn0mvjogn0erlgivkfl14karl0';
+// $object->redirect_uri = 'https://app.com/redirect';
+// $object->code = $_GET["code"];
+// $object->context = $_GET["context"];
+// $object->scope = $_GET["scope"];
 
-/*
-$object = new \stdClass();
-$object->client_id = 'kqegihaeawy0e97dqg7jt82puemivj2';
-$object->client_secret = '27kqptn0mvjogn0erlgivkfl14karl0';
-$object->redirect_uri = 'https://app.com/redirect';
-$object->code = $_REQUEST['code'];
-$object->context = $_REQUEST['context'];
-$object->scope = $_REQUEST['scope'];
-Bigcommerce::useJson();
-
-$authTokenResponse = Bigcommerce::getAuthToken($object);
-
-// configure BC App
-Bigcommerce::configure([
-		'client_id' => 'gr6fhjqedvbltbj5hsdz83gruqwaago',
-		'auth_token' => $authTokenResponse->access_token,
-		'store_hash' => 'qsksjq4qfu'
-]);
-
-Bigcommerce::verifyPeer(false);
-
-// test
-$ping = Bigcommerce::getTime();
-
-if ($ping) {
-	echo "time:";
-	echo $ping->format('H:i:s');
-	echo "----time end";
-} else {
-	echo "no ping";
-}
-*/
-
-$object = new \stdClass();
-$object->client_id = 'kqegihaeawy0e97dqg7jt82puemivj2';
-$object->client_secret = '27kqptn0mvjogn0erlgivkfl14karl0';
-$object->redirect_uri = 'https://app.com/redirect';
-$object->code = $_GET["code"];
-$object->context = $_GET["context"];
-$object->scope = $_GET["scope"];
+// Bigcommerce::useJson();
 
 // print_r($object);
 //$authTokenResponse = Bigcommerce::getAuthToken($object);
@@ -60,6 +31,10 @@ $object->scope = $_GET["scope"];
 // 		'auth_token' => 'td6r7myuznys254i1sr6j75z6cnfxpi',
 // 		'store_hash' => 'qsksjq4qfu'
 // ));
+/*
+ * new experimental way - end
+ */
+
 
 // oauth2 auth
 Bigcommerce::configure(array(
@@ -67,7 +42,6 @@ Bigcommerce::configure(array(
 		'auth_token' => '7unrv1n4nqmbkguhac0jgppgjip6xz5',
 		'store_hash' => 'qsksjq4qfu'
 ));
-
 Bigcommerce::verifyPeer(false);
 
 // initial test
@@ -76,12 +50,13 @@ Bigcommerce::verifyPeer(false);
 // if ($ping) {
 // 	echo "time:";
 // 	echo $ping->format('H:i:s');
-// 	echo "----time end";
-// } else {
-// 	echo "no ping";
 // }
 
-// global values
+
+// *************
+// global vars
+// *************
+
 $store = Bigcommerce::getStore();
 if ($store) {
 	$storeCurrency = $store->currency;

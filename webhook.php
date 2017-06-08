@@ -12,7 +12,8 @@ $scope = $data["scope"];
 $obj = $data["data"];
 $id = $obj["id"];
 
-//file_put_contents("amplify.txt", $scope . "-". "$id", FILE_APPEND);
+// simple way to debug...
+// file_put_contents("amplify.txt", $scope . "-". "$id", FILE_APPEND);
 
 require_once getcwd() . '/helper.php';
 use Bigcommerce\Api\Client as Bigcommerce;

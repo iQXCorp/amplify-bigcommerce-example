@@ -2,21 +2,22 @@
 require_once getcwd() . '/helper.php';
 use Bigcommerce\Api\Client as Bigcommerce;
 
+define('DEBUG', false);
+
+function dump($obj, $show = false) {
+  if (DEBUG || $show) {
+    echo "<pre>";
+	print_r($obj);
+	echo "</pre>";
+  }
+}
+
 $products = Bigcommerce::getProducts();
 // if ($products) {
 // 	foreach ($products as $product) {
 // 		echo $product->name;
 // 		echo ",";
 // 		echo $product->price;
-// 		 echo "<pre>";
-// 		 if ($product->name == "[Sample] Smith Journal 13") {
-// 		 	print_r($product);
-		 	
-// 		 	$skus = $product->skus;
-// 		 	print_r($skus);
-		 	
-// 		 }
-// 		 echo "</pre>";
 // 		echo "<hr>";
 // 	}
 // } else {
@@ -28,11 +29,9 @@ $customers = Bigcommerce::getCustomers();
 // if ($customers) {
 // 	foreach ($customers as $customer) {
 // 		echo $customer->company;
-// echo ",";
+//      echo ",";
 // 		echo $customer->email;
-// 		echo "<pre>";
-// 		print_r($customer);
-// 		echo "</pre>";
+// 		dump($customer);
 // 		echo "<hr>";
 // 	}
 // } else {
@@ -45,9 +44,7 @@ $orders = Bigcommerce::getOrders();
 // 		echo $order->customer_id;
 // 		echo ",";
 // 		echo $order->subtotal_ex_tax;
-// 		echo "<pre>";
-// 		print_r($order);
-// 		echo "</pre>";
+//      dump($order);
 // 		echo "<hr>";
 // 	}
 // } else {
@@ -60,16 +57,10 @@ foreach ($customers as $key => $customer) {
 	
   try {
       $result = $customer_api_instance->createOrUpdateCustomer($transformedCustomer);
-//       echo "<pre>";
-//       print_r($result);
-//       echo "</pre>";
+	  dump($result);
   } catch (Exception $e) {
-  	
-	  echo "ERROR CUSTOMERS:<pre>";
-	  print_r($e);
-	  echo "</pre>";
-  	
       echo '<hr>Exception when calling CustomersApi->createOrUpdateCustomer: ', $e->getMessage(), PHP_EOL;
+      dump($e);
   }
 
 }
@@ -83,13 +74,10 @@ foreach ($products as $key => $product) {
   
   try {
       $result = $product_api_instance->createOrUpdateProduct($transformedProduct);
-      //print_r($result);
+      dump($result);
   } catch (Exception $e) {
-  	
-  	echo "ERROR PRODUCTS:<pre>";
-  	print_r($e);
-  	echo "</pre>";
-    echo '<hr>Exception when calling ProductsApi->createOrUpdateProduct: ', $e->getMessage(), PHP_EOL;
+  	echo '<hr>Exception when calling ProductsApi->createOrUpdateProduct: ', $e->getMessage(), PHP_EOL;
+    dump($e);
   }
 
 }
@@ -100,15 +88,10 @@ foreach ($orders as $key => $order) {
 
   try {
     $result = $order_api_instance->createOrUpdateOrder($transformedOrder);
-//     echo "PRINT RESULTS:";
-//     echo "<pre>";
-//     print_r($result);
-//     echo "</pre>";
+    dump($result);
   } catch (Exception $e) {
-  	echo "ERROR ORDERS:<pre>";
-  	print_r($e);
-  	echo "</pre>";
     echo 'Exception when calling OrdersApi->createOrUpdateOrder: ', $e->getMessage(), PHP_EOL;
+    dump($e);
   }
 
 }
@@ -120,30 +103,21 @@ if ($inTestMode) {
   try {
   	$webhooksForDelete = Bigcommerce::listWebhooks();
       
-  } catch (Exception $e) {
-    echo "ERROR webhooks:<pre>";
-    print_r($e);
-    echo "</pre>";
-    echo 'Exception when calling Bigcommerce::deleteWebhook: ', $e->getMessage(), PHP_EOL;
+  } catch (Exception $e) {    
+    echo 'Exception when calling Bigcommerce::listWebhooks: ', $e->getMessage(), PHP_EOL;
+    dump($e);
   }
-//     echo "LIST HOOKS start-";
-//     echo "<pre>";
-//     print_r($webhooksForDelete);
-//     echo "</pre>";
-//     echo "-end";
-//     echo "<hr>";
 
   if ($webhooksForDelete) {
 	foreach ($webhooksForDelete as $hook) {
 	
 	  try {
 	    $result = Bigcommerce::deleteWebhook($hook->id);
-// 	        echo "DELETE HOOKS:<pre>";
-// 			print_r($result);
-// 	        echo "</pre>";
+	    dump($result);
 	        
 	  } catch (Exception $e) {
 	    echo 'Exception when calling Bigcommerce::deleteWebhook: ', $e->getMessage(), PHP_EOL;
+	    dump($e);
 	  }
 	}    
   }
@@ -154,32 +128,22 @@ foreach ($webhookTypes as $webhookType) {
     $obj = array(
   			'scope'         => $webhookType,
   			'destination'   => $webhookURL . '?scope=' . $webhookType,
-   			"is_active"     => true);
-      
-          echo "<pre>";
-          print_r($obj);
-          echo "</pre>";      
+   			"is_active"     => true);   
       
     $result = Bigcommerce::createWebhook(json_encode($obj));           
-      
-//       echo "Created Hook: " . $webhookType;
-//       echo "<pre>";
-//       print_r($result);
-//       echo "</pre>";
-      
+    dump($result);
+    
   } catch (Exception $e) {
-	echo "<pre>";
-    print_r($e);
-    echo "</pre>";
     echo 'Exception when calling Bigcommerce::createWebhook: ', $e->getMessage(), PHP_EOL;
+    dump($e);
   }
 }
-  
+ 
+/*
+ * Debug:
+ */
 //   $webhooksForDelete = Bigcommerce::listWebhooks();
 //   echo "LIST HOOKS start-";
-//   echo "<pre>";
-//   print_r($webhooksForDelete);
-//   echo "</pre>";
+//   dump($webhooksForDelete);
 //   echo "-end";
-//   echo "<hr>";
 ?>
