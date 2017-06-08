@@ -2,6 +2,8 @@
 
 ## Steps
 
+- Change the oauth2 vars in header.php
+- Initialize other global vars in header.php
 - To run, execute /prepare.php
 
 ## Notes
